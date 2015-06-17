@@ -1,0 +1,146 @@
+<% if logged_in? %>
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+
+    	<title>NTQ Solution Admin Control Panel</title>
+
+    	<link rel="icon" type="image/ico" href="favicon.ico"/>
+
+    	<link href="css/stylesheets.css" rel="stylesheet" type="text/css"/>
+
+	</head>
+	<body>
+
+		<div class="header">
+    		<a class="logo" href="list-categories.html">
+        		<%= image_tag("img/logo.png", :alt => "NTQ Solution - Admin Control Panel") %>
+    		</a>
+    
+		</div>
+
+		<div class="menu">
+
+    	<div class="breadLine">
+        	<div class="arrow"></div>
+        	<div class="adminControl active">
+            	Hi, <%= @user.name %>
+        	</div>
+    	</div>
+
+    	<div class="admin">
+        	<div class="image">
+            	<%= image_tag @user.picture.url if @user.picture? %>
+        	</div>
+        	<ul class="control">
+            	<li><span class="icon-cog"></span> <%= link_to " Update Profile", edit_user_path(current_user) %></li>
+            	<li><span class="icon-share-alt"></span><%= link_to " Logout", logout_path, method: :delete %></li>
+        	</ul>
+    	</div>
+
+    	<ul class="navigation">
+        	<li>
+            	<a href="list-categories.html">
+                	<span class="isw-grid"></span><span class="text">Categories</span>
+            	</a>
+       		</li>
+        	<li>
+            	<a href="list-products.html">
+                	<span class="isw-list"></span><span class="text">Products</span>
+            	</a>
+        	</li>
+        	<li>
+            	<a href="list-users.html">
+                	<span class="isw-user"></span><span class="text">Users</span>
+            	</a>
+        	</li>
+    	</ul>
+
+	</div>
+
+	<div class="content">
+
+
+    <div class="breadLine">
+
+        <ul class="breadcrumb">
+            <li><a href="list-users.html">List Users</a> <span class="divider">></span></li>
+            <li class="active">Edit</li>
+        </ul>
+
+    </div>
+
+    	<div class="workplace">
+
+        	<div class="row-fluid">
+
+            	<div class="span12">
+                	<div class="head">
+                    	<div class="isw-grid"></div>
+                    	<h1>Users Management</h1>
+
+                    	<div class="clear"></div>
+                	</div>
+                	<div class="block-fluid">
+                    	
+                    		<%= form_for(@user, html: {multipart: true}) do |f| %>
+                    		<div class="row-form">
+                            	<div class="span3">Username:</div>
+                            	<div class="span9"> <%= f.text_field :name %> </div>
+                            	<div class="clear"></div>
+                            </div> 
+                    		<div class="row-form">
+                            	<div class="span3">Email:</div>
+                            	<div class="span9"> <%= f.text_field :email %> </div>
+                            	<div class="clear"></div>
+                        	</div> 
+                    		<div class="row-form">
+                            	<div class="span3">Password:</div>
+                            	<div class="span9"> <%= f.text_field :password, :placeholder => "some text value..." %> </div>
+                            	<div class="clear"></div>
+                        	</div> 
+                    		<div class="row-form">
+                            	<div class="span3">Upload Avatar:</div>
+                            	<div class="span9">
+                            	<%= f.file_field :picture %>
+                            	
+                            	</div>
+                            	<div class="clear"></div>
+                        	</div> 
+                        	<div class="row-form">
+                            	<div class="span3">Activate:</div>
+                            	<div class="span9">
+                                	<select name="select">
+                                    	<option value="0">choose a option...</option>
+                                    	<option value="1">Activate</option>
+                                    	<option value="2">Deactivate</option>
+                                	</select>
+                            	</div>
+                            	<div class="clear"></div>
+                        	</div>                          
+                        	<div class="row-form">
+                        		<%= f.submit "Update", class: "btn btn-success" %>
+								<div class="clear"></div>
+                        	</div>
+                        	<% end %>
+                    	
+                    	<div class="clear"></div>
+                	</div>
+            	</div>
+
+        	</div>
+        	<div class="dr"><span></span></div>
+
+    	</div>
+
+	</div>
+
+	</body>
+	</html>
+<% else %>
+	<script type="text/javascript">
+		window.location.href = "/login"
+	</script>
+<% end %>

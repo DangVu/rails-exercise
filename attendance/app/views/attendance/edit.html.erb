@@ -1,0 +1,56 @@
+<div>
+  <form id="edit-attendance-form" action="<%= attendance_create_path%> " onsubmit="return validateAttendanceForm();" method="post">
+    <input type="hidden" value="<%= @month%>" name="month" />
+    <input type="hidden" value="<%= @year%>" name="year" />
+    <div class="input-prepend input-append">
+      <span class="add-on">Họ tên:</span>
+      <input type="text" readonly="readonly" name="fullname" value="<%= @user.fullname %>"/>
+      <span class="add-on">Ngày tháng</span>
+      <input type="text" name="date" id="selected-date" class="input-small" value="<%= "#{@year}-#{@month}-#{@day}"%>" />
+      <input type="hidden" name="email" value="<%= @user.email %>"/>
+    </div>
+    <br/>
+
+    <div class="input-prepend">
+      <span class="add-on">Thời gian</span>
+      <select name="absent_type" class="input-small" onchange="changeAbsentTypeHandler(this);">
+        <option value="all_day" <%= absent_type_selected(@attendance, 'all_day')%> >Cả ngày</option>
+        <option value="morning" <%= absent_type_selected(@attendance, 'morning')%>>Buổi sáng</option>
+        <option value="afternoon" <%= absent_type_selected(@attendance, 'afternoon')%>>Buổi chiều</option>
+        <option value="time" <%= absent_type_selected(@attendance, 'time')%>>Giờ</option>
+        <option value="late" <%= absent_type_selected(@attendance, 'late')%>>Đi muộn</option>
+      </select>
+    </div>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="input-prepend input-append">
+      <span class="add-on">Từ: </span>
+      <input type="text" name="from_hour" class="input-small" <% if @attendance.nil? || @attendance.absent_type != 'time' %> readonly="readonly" <% end %>
+             value="<%= @attendance.from_hour if !@attendance.nil?%>"/>
+      <span class="add-on">Tới: </span>
+      <input type="text" name="to_hour" class="input-small" <% if @attendance.nil? || @attendance.absent_type != 'time' %> readonly="readonly" <% end %>
+             value="<%= @attendance.to_hour if !@attendance.nil?%>" />
+    </div>
+    <br/>
+
+    <div class="input-prepend">
+      <span class="add-on">Lặp: </span>
+      <% 5.times do |n| %>
+      <label class="checkbox inline repeat-checkbox">
+      <%= n + 2 %> <input name="days[]" value="<%= n + 2 %>" type="checkbox" <%= absent_repeat_checked(n + 2) %> />
+      </label>
+      <% end %>
+    </div> &nbsp;&nbsp;
+    <div class="input-prepend input-append">
+      <span class="add-on">Từ ngày: </span>
+      <input type="text" name="from_date" id="from-date" class="input-small" value="<%= !@repeat.nil? ? @repeat.from_date : "#{@year}-#{@month}-#{@day}" %>"/>
+      <span class="add-on">Tới: </span>
+      <input type="text" name="to_date" id="to-date" class="input-small" value="<%= !@repeat.nil? ? @repeat.to_date : "#{@year}-#{@month}-#{@day}" %>" />
+    </div>
+    <br/>
+
+    <div class="input-prepend">
+      <span class="add-on">Nội dung </span>
+      <textarea name="content" rows="4"><%= @attendance.content if !@attendance.nil?%></textarea>
+    </div>
+  </form>
+</div>

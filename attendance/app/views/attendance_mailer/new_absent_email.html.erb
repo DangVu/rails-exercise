@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h1>Người nghỉ: <%= @user.fullname%> (<%= @attendance.email%>) </h1>
+    <b>Chi tiết:</b><br/>
+    <p>
+      Họ tên: <%= @user.fullname %><br/>
+      <% if (@repeat.nil?) %>
+      Ngày: <%= @attendance.time %><br/>
+      <% end %>
+      Thời gian: <%= absent_type_text @attendance.absent_type %><% if (@attendance.absent_type == 'time') %><%= ", từ #{@attendance.from_hour}h tới #{@attendance.to_hour}h"%><% end %>
+      <br/>
+      <% if (!@repeat.nil?) %>
+      Lặp các buổi thứ: <%= @repeat.days %> từ ngày: <%= @repeat.from_date %> tới ngày <%= @repeat.to_date %><br/>
+      <% end %>
+      Nội dung: <%= @attendance.content %><br/>
+    </p>
+  </body>
+</html>

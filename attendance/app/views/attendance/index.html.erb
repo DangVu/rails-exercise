@@ -1,0 +1,82 @@
+<% provide(:title, "Danh sách")  %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    //Make tooltip
+    $('.showtip[title]').colorTip({color:'black', timeout: 100});
+
+    $('#edit-attendance').on('hidden', function() {
+      $(this).removeData('modal');
+    });
+
+    //Create date picker
+    $('#edit-attendance').on('shown', function() {
+      $('#selected-date').datepicker({"dateFormat": "yy-mm-dd"});
+      $('#from-date').datepicker({"dateFormat": "yy-mm-dd"});
+      $('#to-date').datepicker({"dateFormat": "yy-mm-dd"});
+    });
+  });
+</script>
+<h1>Bảng điểm danh</h1>
+
+<form method="get" class="form-inline">
+  <div class="input-prepend">
+  <span class="add-on">Tháng: </span>
+  <select name="month" class="input-mini">
+    <% 12.times do |n| %>
+    <option <% if (n + 1) == @selected_month.to_i %>selected<% end %>   value="<%= n + 1 %>"><%= n + 1 %></option>
+    <% end %>
+  </select>
+  </div>
+  &nbsp;&nbsp;
+  <div class="input-prepend">
+    <span class="add-on">Năm: </span>
+    <input type="text" name="year" placeholder="Enter a year" class="input-mini" value="<%= @selected_year%>"/>
+  </div>
+  <input type="submit" class="btn" value="Tìm"/>
+</form>
+<table class="table-bordered table-striped attendance-table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Họ tên</th>
+      <% 31.times do |n| %>
+        <th class="day-cell"><%= n + 1 %> </th>
+      <% end %>
+        <th>Tổng (muộn)</th>
+        <th>Tổng (vắng)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% i = 1 %>
+    <% @users.each do |user| %>
+      <tr>
+        <td class="id-cell"><%= i%> <% i += 1%>  </td>
+        <td title="<%= user.email %>" class="fullname"><%= user.fullname %> </td>
+        <% 31.times do |n| %>
+          <% key = user.email + @selected_year.to_s + @selected_month.to_s + (n + 1).to_s %>
+            <td <% if can_edit_attendance? user %> onclick="showEditAttendanceForm(this, '<%= user.id %>',<%= @selected_year %>, <%= @selected_month %>, <%= n + 1%> );" <% end %>
+                class="<%= absent_type(key) %> absent-status showtip" title="<%= absent_title(key) %>">
+              <%= absent_text key %>
+            </td>
+        <% end %>
+          <td class="cell"><%=  @attendance_hash[user.email + @selected_year.to_s + @selected_month.to_s + '-late']%></td>
+          <td class="cell"><%=  @attendance_hash[user.email + @selected_year.to_s + @selected_month.to_s + '-absent']%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<!-- Modal -->
+<div id="edit-attendance" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="edit-attendance">Thêm/Sửa vắng mặt</h3>
+  </div>
+  <div class="modal-body">
+    <p>Vui lòng chờ...</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Đóng</button>
+    <button class="btn btn-primary" type="submit" onclick="submitAttendance();">Lưu</button>
+  </div>
+</div>

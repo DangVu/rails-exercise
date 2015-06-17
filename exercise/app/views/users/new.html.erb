@@ -1,0 +1,9 @@
+<% if logged_in? %>
+	<h1>Users#new</h1>
+	<p>Find me in app/views/users/new.html.erb</p>
+	<%= link_to "Logout", logout_path, method: :delete %>
+<% else %>
+	<script type="text/javascript">
+		window.location.href = "/login"
+	</script>
+<% end %>

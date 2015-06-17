@@ -1,0 +1,14 @@
+<% provide(:title, "Đăng nhập")  %>
+<div class="row">
+  <h1>Đăng nhập</h1>
+  <div class="span6 offset5">
+    <p>
+      Vui lòng đăng nhập hệ thống bằng tài khoản email NTQ của bạn.
+    <ul>
+      <li>Click vào nút <strong>Sign in with Google</strong> bên dưới.</li>
+      <li>Khi được hỏi, đồng ý cấp quyền truy cập thông tin cá nhân cho hệ thống.</li>
+    </ul>
+    </p>
+    <%= link_to image_tag('sign-in-with-google.png', class: 'google-singin-button'), auth_redirect_url %>
+  </div>
+</div>
